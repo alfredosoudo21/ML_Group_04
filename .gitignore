@@ -1,0 +1,15 @@
+# Python and Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Local editor settings
+.vscode/
+.idea/
+
+# Generated outputs (keep source notebooks and raw data under version control)
+outputs/
+figures/
+*.log
