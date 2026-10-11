@@ -1,0 +1,112 @@
+CORREÇÕES E TAREFAS DO NOTEBOOK — ENTREGA INTERMÉDIA
+====================================================
+
+Ficheiro: notebooks/01_data_exploration.ipynb
+Objetivo: corrigir um ponto de cada vez, executar a célula, observar o resultado
+e escrever uma conclusão que os resultados realmente sustentem.
+Estado: [ ] por fazer | [x] concluído. Não apagar dados sem os investigar.
+
+SECÇÃO 1 — IMPORT AND EXPLORE THE DATA
+
+[ ] 1. Corrigir a conclusão sobre a distribuição do target.
+    Trocar "The proportion is equilibrated!" por uma frase em inglês claro
+    com os valores observados: classe 1 ≈ 55,9% e classe 0 ≈ 44,1%.
+    Isto mostra equilíbrio razoável, mas ainda não prova que um modelo será bom.
+
+[ ] 2. Corrigir a explicação do número de observações após train.info().
+    O train tem 6 534 linhas, visíveis no RangeIndex ou em train.shape.
+    Não deduzir esse total apenas do Non-Null Count de ID. Corrigir também
+    "concluded fro" e usar "Non-Null Count" se mencionar esse campo.
+
+[ ] 3. Melhorar a apresentação das estatísticas descritivas.
+    Considerar separar o resumo numérico do categórico para reduzir os NaN
+    exibidos por describe(include='all'). Manter a análise compreensível para
+    quem vai explicar o trabalho. Passar as notas pessoais em português da
+    célula de código para Markdown em inglês, se forem úteis no notebook final.
+
+[ ] 4. Sustentar as conclusões sobre categorias raras.
+    describe() mostra que transport_method tem 80 categorias, mas não mostra
+    quantas observações pertencem a cada uma. Apresentar frequências antes
+    de afirmar que existem categorias raras. Não decidir já se a variável
+    deve ser removida.
+
+[ ] 5. Rever a conclusão sobre duplicados.
+    train.duplicated().sum() dá 0 quando inclui ID, que é único. Comparar
+    também as linhas sem ID: numa verificação inicial apareceram 10 possíveis
+    duplicados. Sem ID e sem target apareceram 12 pares/linhas repetidos.
+    Inspecionar esses casos antes de decidir se são erros: compras distintas
+    podem ter os mesmos atributos. A conclusão atual "não existem linhas
+    duplicadas" precisa de indicar exatamente quais colunas foram comparadas.
+    Em clientes.csv, verificar customer_id duplicados continua adequado.
+
+[x] 6. Rever a célula "Initial Feature Roles".
+    O select_dtypes(include=['object', 'category']) mostrou um aviso de
+    compatibilidade no pandas instalado. Ajustar os tipos selecionados quando
+    chegarmos a esta célula e executar novamente para confirmar que a lista
+    inclui as variáveis de texto esperadas.
+
+[x] 7. Confirmar a consistência entre os ficheiros.
+    Mostrar no notebook que train e test têm os mesmos preditores, que
+    repeat_purchase_90d só existe no train, que sample_submission tem ID e
+    repeat_purchase_90d, e que os seus IDs estão na ordem dos IDs do test.
+
+[ ] 8. Preencher 1.8 Univariate Analysis.
+    Estudar distribuições individuais relevantes com tabelas ou gráficos
+    simples. Registar conclusões específicas após cada análise.
+
+[ ] 9. Preencher 1.9 Relationships with the Target.
+    Comparar variáveis numéricas entre as classes 0 e 1 e calcular taxas de
+    recompra por categorias com observações suficientes. Não tratar uma
+    associação observada como prova de causa ou de utilidade preditiva.
+
+[ ] 10. Preencher 1.10 Relationships Between Predictors.
+    Investigar informação possivelmente repetida entre totais monetários,
+    contagens de compras e gastos em várias janelas de tempo.
+
+[ ] 11. Preencher 1.11 Data Consistency.
+    Verificar a ordem lógica das contagens nas janelas de 30, 90, 180 e 365
+    dias; conferir totais/descontos/impostos; investigar intervalos negativos
+    e valores monetários de 1 000 000 000 ou negativos. Registar exceções
+    observadas antes de escolher qualquer tratamento.
+
+[ ] 12. Preencher 1.12 Exploration Summary.
+    Resumir apenas descobertas demonstradas nas células anteriores e indicar
+    que decisões de limpeza ou preparação precisam de ser estudadas a seguir.
+
+SECÇÃO 2 — CLEAN AND PRE-PROCESS THE DATA
+
+[ ] 13. Justificar e implementar o tratamento de valores em falta e anomalias.
+    Distinguir valores ausentes por falta de histórico de potenciais erros.
+    Decidir se e como integrar clientes.csv; preparar categorias e datas;
+    criar novas variáveis e escalar apenas se fizer sentido. As transformações
+    usadas pelo modelo devem ser reprodutíveis e ajustadas sem usar test.csv.
+
+SECÇÃO 3 — FEATURE SELECTION
+
+[ ] 14. Escolher e aplicar um método de seleção visto nas aulas.
+    Justificar o conjunto final. Analisar ID e customer_id como identificadores
+    antes de os usar como preditores.
+
+SECÇÃO 4 — BUILD A SIMPLE MODEL AND ASSESS PERFORMANCE
+
+[ ] 15. Definir a estratégia de avaliação e as métricas, justificando-as.
+    Treinar pelo menos um modelo simples, avaliar em dados não usados no
+    treino e interpretar os resultados. Considerar que test.csv contém compras
+    posteriores ao train.csv ao escolher a validação.
+
+[ ] 16. Gerar previsões para todas as 986 linhas do test.csv.
+    Produzir CSV com as colunas ID e repeat_purchase_90d no formato de
+    sample_submission.csv, mantendo os IDs e a sua ordem inalterados.
+
+ENTREGA E VERIFICAÇÃO FINAL
+
+[ ] 17. Executar o notebook do início ao fim no ambiente ProjectML.
+    Corrigir erros, avisos relevantes, células sem propósito e conclusões
+    que não sejam sustentadas pelas tabelas ou gráficos apresentados.
+
+[ ] 18. Preparar o PDF de duas páginas exigido pelo Homework.
+    Incluir esquema do processo e justificar preparação, eventual junção de
+    clientes.csv, seleção de variáveis, modelo e avaliação.
+
+[ ] 19. Usar a convenção Homework_Group04 indicada no enunciado e confirmar
+    os nomes específicos pedidos pela plataforma antes de submeter.
