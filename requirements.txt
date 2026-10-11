@@ -5,3 +5,4 @@ seaborn>=0.13
 scikit-learn>=1.5
 jupyterlab>=4.2
 notebook>=7.6
+ipykernel>=6.29
