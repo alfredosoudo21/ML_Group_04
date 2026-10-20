@@ -14,7 +14,7 @@ notebooks/
   01_data_exploration.ipynb   # Transaction EDA and cleaning decisions
   02_client_data_integration.ipynb # Client EDA, feature decisions and safe joins
   03_temporal_baseline_experiments.ipynb # Temporal evaluation, L1 selection and predictions
-Midterm_Group04.pdf           # Two-page intermediate report
+Homework_Group04.pdf          # Two-page intermediate report
 outputs/notebook03/           # Generated metrics, feature lists and submission CSV
 ```
 
@@ -51,7 +51,7 @@ The final pipeline is refitted on all eligible labelled purchases and writes fou
 - `feature_selection_search.csv`: the 16 inner candidates and their scores.
 - `selected_features.csv`: the final retained columns, original variables and coefficients.
 
-Running the notebook does not upload a submission to Kaggle. The first two notebooks retain the shared EDA and cleaning decisions; Notebook 03 contains the executable preprocessing, feature selection and model comparison. The two-page report is `Midterm_Group04.pdf`.
+Running the notebook does not upload a submission to Kaggle. The first two notebooks retain the shared EDA and cleaning decisions; Notebook 03 contains the executable preprocessing, feature selection and model comparison. The two-page report is `Homework_Group04.pdf`.
 
 For the course submission, use the required `Homework_Group04` naming convention for the PDF and notebook ZIP.
 
