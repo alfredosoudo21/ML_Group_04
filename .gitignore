@@ -8,6 +8,7 @@ __pycache__/
 venv/
 
 # Local editor settings
+.DS_Store
 .vscode/
 .idea/
 

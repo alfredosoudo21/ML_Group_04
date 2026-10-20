@@ -11,12 +11,18 @@ data/                         # Official project files
   clientes.csv                # Optional customer-level data, joined on customer_id
   sample_submission.csv       # Required Kaggle submission layout
 notebooks/
-  01_data_exploration.ipynb   # Shared starting point: data audit and EDA
+  01_data_exploration.ipynb   # Transaction EDA and cleaning decisions
+  02_client_data_integration.ipynb # Client EDA, feature decisions and safe joins
+  03_temporal_baseline_experiments.ipynb # Temporal evaluation, L1 selection and predictions
+Homework_Group04.pdf          # Two-page intermediate report
+outputs/notebook03/           # Generated metrics, feature lists and submission CSV
 ```
 
 `data/` contains the original CSV files from the supplied project archive. Do not overwrite these files. Any derived datasets, charts or submissions should go in a local `outputs/` folder, which is intentionally ignored by Git.
 
 ## First-time setup
+
+Use Python 3.11 or later. NumPy 2.3.1 or later is required to include the fix for false floating-point warnings with Accelerate on newer Apple Silicon Macs.
 
 Clone the repository and open the project folder:
 
@@ -34,7 +40,20 @@ python -m pip install -r requirements.txt
 python -m jupyter lab
 ```
 
-Open `notebooks/01_data_exploration.ipynb` from JupyterLab and run it from top to bottom. The notebook is written with paths relative to the repository root.
+Open the notebooks in numerical order and run each from top to bottom. Both the repository root and the `notebooks` directory are supported as working directories. The first two notebooks include a table of contents; there are no separate copies for the index.
+
+Notebook 03 compares transaction-only and client-enriched logistic regression using the same chronological split and a 90-day gap. An inner chronological split with its own 90-day gap selects the L1 strength and whether to remove `random_noise`. Preprocessing and selection are fitted only on the corresponding training rows. Main-validation scores select the final feature set, so they are not an independent final test of the complete decision process.
+
+The final pipeline is refitted on all eligible labelled purchases and writes four files to `outputs/notebook03/`:
+
+- `submission_logistic_temporal.csv`: predictions for all 986 test IDs.
+- `validation_metrics.csv`: scores for the two selected procedures and constant-positive reference.
+- `feature_selection_search.csv`: the 16 inner candidates and their scores.
+- `selected_features.csv`: the final retained columns, original variables and coefficients.
+
+Running the notebook does not upload a submission to Kaggle. The first two notebooks retain the shared EDA and cleaning decisions; Notebook 03 contains the executable preprocessing, feature selection and model comparison. The editable report text and PDF generator are in `docs/`.
+
+The complete modelling notebook was also verified with the existing Anaconda environment (Python 3.14.6, NumPy 2.4.6, pandas 3.0.3 and scikit-learn 1.9.0). It produced the same selected configuration and test predictions without numerical warnings. Older environments should be updated using `requirements.txt`; do not suppress numerical warnings to obtain a clean run.
 
 ## Collaboration rules
 
