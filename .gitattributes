@@ -1,0 +1,3 @@
+# Preserve PDF/ZIP bytes; automatic line-ending conversion corrupts these formats.
+*.pdf binary
+*.zip binary
