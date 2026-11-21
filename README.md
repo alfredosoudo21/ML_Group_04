@@ -14,13 +14,13 @@ notebooks/
   01_data_exploration.ipynb   # Transaction EDA and cleaning decisions
   02_client_data_integration.ipynb # Client EDA, feature decisions and safe joins
   03_temporal_baseline_experiments.ipynb # Temporal evaluation, L1 selection and predictions
-  04_model_comparison.ipynb   # Final project model comparisons and random forest submission
+  04_model_comparison.ipynb   # Final project model comparisons and random forest submissions
 src/history_cleaning.py      # Shared, deterministic same-row audit and corrections
 scripts/                     # Rebuild PDF, verify deliverables and create the ZIP
 Homework_Group04.pdf          # Two-page intermediate report
 Homework_Group04.zip          # Verified course submission package
 outputs/notebook03/           # Generated metrics, feature lists and submission CSV
-outputs/notebook04/           # Reproducible random forest submission CSV
+outputs/notebook04/           # Two reproducible random forest submission CSVs
 ```
 
 `data/` contains the original CSV files from the supplied project archive. Do not overwrite these files. Any derived datasets, charts or submissions should go in a local `outputs/` folder, which is intentionally ignored by Git.
@@ -47,7 +47,7 @@ python -m jupyter lab
 
 Run each notebook from top to bottom, starting in the repository root or the `notebooks` directory. Keep `src/` beside `data/` and `notebooks/` so Notebooks 01, 03 and 04 can import the shared cleaning rules.
 
-Notebook 04 compares eight classifiers with and without customer attributes in three expanding temporal windows. It tests thresholds of 0.45 and 0.50 on the same validation probabilities and reports F1 for each period. Section 4.6 reproduces the random forest CSV submitted on 20 November 2026 (public F1 of 0.80798).
+Notebook 04 compares eight classifiers with and without customer attributes in three expanding temporal windows. Section 4.6 examines the forest's errors and the purchase rhythm. It tests four further features individually on the forest and compares the full set and a training-only feature filter on the forest, logistic regression and gradient boosting. Section 4.7 reproduces both Kaggle submissions. The forest with customer attributes scored 0.80798 public F1 on 20 November 2026. The transaction-only forest with purchase rhythm scored 0.79487 on 21 November 2026.
 
 The original CSVs are never overwritten. The shared rules reconstruct invalid or missing historical means from total/count when count is positive; invalidate impossible maxima and recover the exact one/two-purchase cases; and reconstruct annual spend only through exact equal-count identities. Unrecoverable invalid values remain missing for training-fold imputation. Structural missing means for customers without purchase history remain undefined. Counts, totals, minima, spread and shorter-window spend are trusted after the cross-column checks in Notebook 01.
 
