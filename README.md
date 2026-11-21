@@ -14,11 +14,13 @@ notebooks/
   01_data_exploration.ipynb   # Transaction EDA and cleaning decisions
   02_client_data_integration.ipynb # Client EDA, feature decisions and safe joins
   03_temporal_baseline_experiments.ipynb # Temporal evaluation, L1 selection and predictions
+  04_model_comparison.ipynb   # Final project model comparisons and random forest submission
 src/history_cleaning.py      # Shared, deterministic same-row audit and corrections
 scripts/                     # Rebuild PDF, verify deliverables and create the ZIP
 Homework_Group04.pdf          # Two-page intermediate report
 Homework_Group04.zip          # Verified course submission package
 outputs/notebook03/           # Generated metrics, feature lists and submission CSV
+outputs/notebook04/           # Reproducible random forest submission CSV
 ```
 
 `data/` contains the original CSV files from the supplied project archive. Do not overwrite these files. Any derived datasets, charts or submissions should go in a local `outputs/` folder, which is intentionally ignored by Git.
@@ -43,7 +45,9 @@ python -m pip install -r requirements.txt
 python -m jupyter lab
 ```
 
-Open the notebooks in numerical order and run each from top to bottom. Both the repository root and the `notebooks` directory are supported as working directories. All three notebooks include a table of contents. Keep the `src/` folder beside `data/` and `notebooks/`; the first and third notebooks share the same audited cleaning function.
+Run each notebook from top to bottom, starting in the repository root or the `notebooks` directory. Keep `src/` beside `data/` and `notebooks/` so Notebooks 01, 03 and 04 can import the shared cleaning rules.
+
+Notebook 04 compares eight classifiers with and without customer attributes in three expanding temporal windows. It tests thresholds of 0.45 and 0.50 on the same validation probabilities and reports F1 for each period. Section 4.6 reproduces the random forest CSV submitted on 20 November 2026 (public F1 of 0.80798).
 
 The original CSVs are never overwritten. The shared rules reconstruct invalid or missing historical means from total/count when count is positive; invalidate impossible maxima and recover the exact one/two-purchase cases; and reconstruct annual spend only through exact equal-count identities. Unrecoverable invalid values remain missing for training-fold imputation. Structural missing means for customers without purchase history remain undefined. Counts, totals, minima, spread and shorter-window spend are trusted after the cross-column checks in Notebook 01.
 
@@ -60,7 +64,7 @@ The final pipeline is refitted on all eligible labelled purchases and writes six
 
 Running the notebook does not upload a submission to Kaggle. The first two notebooks retain the shared EDA and cleaning decisions; Notebook 03 contains the executable preprocessing, feature selection and model comparison. The two-page report is `Homework_Group04.pdf`.
 
-For the course submission, use `Homework_Group04.pdf` and `Homework_Group04.zip`. The ZIP includes the three executed notebooks, original data, shared source, environment requirements, report and the six generated files listed above. It excludes Git metadata, local environments and diagnostic material in `outputs/review/`.
+The intermediate delivery consists of `Homework_Group04.pdf` and `Homework_Group04.zip`. The ZIP includes Notebooks 01 to 03, original data, shared source, environment requirements, the report and the six generated files listed above.
 
 The corrected workflow was executed on Python 3.11.17, NumPy 2.4.6, pandas 3.0.6 and scikit-learn 1.8.0. Current validation F1 is 0.7350 for transactions and 0.7338 for transactions plus clients; these are development scores, not independent final test estimates. The chosen L1 rule retains 12 encoded columns from 12 original variables after final refitting. Raw `random_noise` enters the chosen candidate but is discarded by its fitted selector. Do not reuse predictions from an earlier cleaning version.
 
