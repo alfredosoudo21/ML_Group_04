@@ -122,3 +122,22 @@ def repair_history(frame):
         'Remaining audited violations': 0,
     }, dtype=int)
     return cleaned, pd.concat([summary, extra])
+
+
+def recover_time_intervals(frame):
+    count = frame['prior_purchase_count']
+    tenure = frame['customer_tenure_days']
+    recency = frame['days_since_previous_purchase']
+    mean_gap = frame['prior_mean_gap_days']
+
+    known_recency = (tenure - (count - 1) * mean_gap).where(count >= 2)
+    known_recency = known_recency.mask(count == 1, tenure)
+    known_gap = (tenure - recency) / (count - 1).where(count >= 2)
+
+    for observed, derived in [(recency, known_recency), (mean_gap, known_gap)]:
+        overlap = observed.notna() & derived.notna()
+        assert (observed[overlap] - derived[overlap]).abs().lt(1e-6).all()
+    return pd.DataFrame({
+        'days_since_previous_purchase': recency.fillna(known_recency.round()),
+        'prior_mean_gap_days': mean_gap.fillna(known_gap),
+    })

@@ -2,6 +2,19 @@
 
 Course group project for predicting whether a customer makes another purchase within 90 days of a purchase occasion.
 
+## Final project
+
+Start with [Notebook 01](notebooks/01_data_exploration.ipynb) for the abstract, the business question and the reading order. Section II continues in [Notebook 02](notebooks/02_client_data_integration.ipynb). Section III starts with the logistic baseline in [Notebook 03](notebooks/03_temporal_baseline_experiments.ipynb). [Notebook 04](notebooks/04_model_comparison.ipynb) completes model assessment and feature selection, compares errors by purchase frequency in Section IV and generates the selected CSV in Section V. The group will supply its contribution breakdown before hand-in.
+
+The selected submission uses the random forest with four client attributes, 100 trees, a minimum of five purchases per leaf and threshold 0.45. Its public F1 was **0.80798**. From the repository root, create a fresh environment with Python **3.14.6**, the version used to generate the submitted file. With that environment active, run:
+
+```sh
+python -m pip install -r requirements-final.txt
+python -m src.final_forest
+```
+
+The command reads the four official files, refits the model and writes `outputs/notebook04/submission_rf_clients_leaf5_t045.csv`. The submitted version contains 986 predictions in sample order, 726 of them positive. Its SHA-256 is `419f972f04b97a4d135cf6fd179a4a0ada29b8a984c2cf9410442a61486eae93`. To reproduce the analysis as well, start `python -m jupyter lab` in the same environment and run the notebooks in order.
+
 ## Repository layout
 
 ```text
@@ -16,6 +29,8 @@ notebooks/
   03_temporal_baseline_experiments.ipynb # Temporal evaluation, L1 selection and predictions
   04_model_comparison.ipynb   # Final project model comparisons and random forest submissions
 src/history_cleaning.py      # Shared, deterministic same-row audit and corrections
+src/final_forest.py           # Train the selected forest and write its submission
+requirements-final.txt       # Versions used for the final notebooks and prediction command
 scripts/                     # Rebuild PDF, verify deliverables and create the ZIP
 Homework_Group04.pdf          # Two-page intermediate report
 Homework_Group04.zip          # Verified course submission package
@@ -25,7 +40,7 @@ outputs/notebook04/           # Three random forest submission CSVs
 
 `data/` contains the original CSV files from the supplied project archive. Do not overwrite these files. Any derived datasets, charts or submissions should go in a local `outputs/` folder, which is intentionally ignored by Git.
 
-## First-time setup
+## Intermediate homework setup
 
 Use Python 3.11 or later. NumPy 2.3.1 or later is required to include the fix for false floating-point warnings with Accelerate on newer Apple Silicon Macs.
 
@@ -47,7 +62,7 @@ python -m jupyter lab
 
 Run each notebook from top to bottom, starting in the repository root or the `notebooks` directory. Keep `src/` beside `data/` and `notebooks/` so Notebooks 01, 03 and 04 can import the shared cleaning rules.
 
-Notebook 04 compares eight classifiers with and without customer attributes in three expanding temporal windows. Section 4.6 examines the forest's errors and the purchase rhythm. It tests four further features individually on the forest and compares the full set and a training-only feature filter on the forest, logistic regression and gradient boosting. Section 4.7 reproduces three Kaggle submissions. The forest with customer attributes scored 0.80798 public F1 on 20 November 2026. On 21 November the same forest with purchase rhythm scored 0.80299. The transaction-only forest with rhythm and different settings scored 0.79487.
+Notebook 04 compares eight classifiers on three expanding temporal windows. It tests the purchase rhythm, four further relationships and groups of original inputs. It also compares the selected forest against predicting a return for everyone and the official sample's three-purchase rule. Section V reproduces the three Kaggle submissions. The two alternative forests scored 0.80299 (clients and rhythm) and 0.79487 (transactions and rhythm, different forest settings).
 
 The original CSVs are never overwritten. The shared rules reconstruct invalid or missing historical means from total/count when count is positive; invalidate impossible maxima and recover the exact one/two-purchase cases; and reconstruct annual spend only through exact equal-count identities. Unrecoverable invalid values remain missing for training-fold imputation. Structural missing means for customers without purchase history remain undefined. Counts, totals, minima, spread and shorter-window spend are trusted after the cross-column checks in Notebook 01.
 
@@ -68,7 +83,7 @@ The intermediate delivery consists of `Homework_Group04.pdf` and `Homework_Group
 
 The corrected workflow was executed on Python 3.11.17, NumPy 2.4.6, pandas 3.0.6 and scikit-learn 1.8.0. Current validation F1 is 0.7350 for transactions and 0.7338 for transactions plus clients; these are development scores, not independent final test estimates. The chosen L1 rule retains 12 encoded columns from 12 original variables after final refitting. Raw `random_noise` enters the chosen candidate but is discarded by its fitted selector. Do not reuse predictions from an earlier cleaning version.
 
-## Rebuild and verify the delivery
+## Rebuild and verify the intermediate delivery
 
 After running all notebooks, install the small reporting-only dependency list and run:
 
@@ -79,7 +94,7 @@ python scripts/verify_homework.py
 python scripts/package_homework.py
 ```
 
-The report reads the latest Notebook 03 outputs instead of copying numerical results by hand. Verification checks execution, index links, fixed split/search sizes, cleaning counts, report consistency and all test IDs. Packaging includes a SHA-256 manifest and verifies the archive contents. Rebuild the PDF and ZIP after any change to notebooks or results. Uploading the ZIP/PDF to the course platform and the new prediction CSV to Kaggle remains a separate manual action.
+The intermediate report reads the Notebook 03 outputs. Verification checks execution, index links, fixed split/search sizes, cleaning counts, report consistency and all test IDs. The packaging script rebuilds the intermediate archive with a SHA-256 manifest. The final project uses all four notebooks and the submission described above.
 
 ## Collaboration rules
 

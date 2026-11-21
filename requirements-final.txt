@@ -1,0 +1,11 @@
+# Final project and the submitted forest, run on Python 3.14.6.
+numpy==2.4.6
+pandas==3.0.3
+scipy==1.18.0
+scikit-learn==1.9.0
+joblib==1.5.3
+threadpoolctl==3.5.0
+matplotlib==3.11.0
+seaborn==0.13.2
+jupyterlab==4.5.9
+ipykernel==6.31.0
