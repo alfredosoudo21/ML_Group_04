@@ -20,7 +20,7 @@ scripts/                     # Rebuild PDF, verify deliverables and create the Z
 Homework_Group04.pdf          # Two-page intermediate report
 Homework_Group04.zip          # Verified course submission package
 outputs/notebook03/           # Generated metrics, feature lists and submission CSV
-outputs/notebook04/           # Two reproducible random forest submission CSVs
+outputs/notebook04/           # Three random forest submission CSVs
 ```
 
 `data/` contains the original CSV files from the supplied project archive. Do not overwrite these files. Any derived datasets, charts or submissions should go in a local `outputs/` folder, which is intentionally ignored by Git.
@@ -47,7 +47,7 @@ python -m jupyter lab
 
 Run each notebook from top to bottom, starting in the repository root or the `notebooks` directory. Keep `src/` beside `data/` and `notebooks/` so Notebooks 01, 03 and 04 can import the shared cleaning rules.
 
-Notebook 04 compares eight classifiers with and without customer attributes in three expanding temporal windows. Section 4.6 examines the forest's errors and the purchase rhythm. It tests four further features individually on the forest and compares the full set and a training-only feature filter on the forest, logistic regression and gradient boosting. Section 4.7 reproduces both Kaggle submissions. The forest with customer attributes scored 0.80798 public F1 on 20 November 2026. The transaction-only forest with purchase rhythm scored 0.79487 on 21 November 2026.
+Notebook 04 compares eight classifiers with and without customer attributes in three expanding temporal windows. Section 4.6 examines the forest's errors and the purchase rhythm. It tests four further features individually on the forest and compares the full set and a training-only feature filter on the forest, logistic regression and gradient boosting. Section 4.7 reproduces three Kaggle submissions. The forest with customer attributes scored 0.80798 public F1 on 20 November 2026. On 21 November the same forest with purchase rhythm scored 0.80299. The transaction-only forest with rhythm and different settings scored 0.79487.
 
 The original CSVs are never overwritten. The shared rules reconstruct invalid or missing historical means from total/count when count is positive; invalidate impossible maxima and recover the exact one/two-purchase cases; and reconstruct annual spend only through exact equal-count identities. Unrecoverable invalid values remain missing for training-fold imputation. Structural missing means for customers without purchase history remain undefined. Counts, totals, minima, spread and shorter-window spend are trusted after the cross-column checks in Notebook 01.
 
