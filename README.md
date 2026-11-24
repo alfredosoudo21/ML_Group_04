@@ -35,7 +35,7 @@ scripts/                     # Rebuild PDF, verify deliverables and create the Z
 Homework_Group04.pdf          # Two-page intermediate report
 Homework_Group04.zip          # Verified course submission package
 outputs/notebook03/           # Generated metrics, feature lists and submission CSV
-outputs/notebook04/           # Three random forest submission CSVs
+outputs/notebook04/           # Four random forest submission CSVs
 ```
 
 `data/` contains the original CSV files from the supplied project archive. Do not overwrite these files. Any derived datasets, charts or submissions should go in a local `outputs/` folder, which is intentionally ignored by Git.
@@ -62,7 +62,9 @@ python -m jupyter lab
 
 Run each notebook from top to bottom, starting in the repository root or the `notebooks` directory. Keep `src/` beside `data/` and `notebooks/` so Notebooks 01, 03 and 04 can import the shared cleaning rules.
 
-Notebook 04 compares eight classifiers on three expanding temporal windows. It tests the purchase rhythm, four further relationships and groups of original inputs. It also compares the selected forest against predicting a return for everyone and the official sample's three-purchase rule. Section V reproduces the three Kaggle submissions. The two alternative forests scored 0.80299 (clients and rhythm) and 0.79487 (transactions and rhythm, different forest settings).
+Notebook 04 compares eight classifiers on three expanding temporal windows. It tests purchase rhythm, four further relationships and groups of original inputs. Section IV compares the selected forest with simple frequency rules. It also selects thresholds and training lengths on earlier purchases and checks them with three later refits. Lowering the threshold for purchases with one to five prior-year purchases raised later mean F1 from 0.7623 to 0.7651 across four seeds, but scored slightly lower on the earlier periods and with submission seed 42. The four-year training window lost in all three later periods. The original forest remains selected.
+
+Section V reproduces four public Kaggle submissions. The client forest scored 0.80798, adding purchase rhythm scored 0.80299, the transaction-only rhythm forest with different settings scored 0.79487 and removing the five count inputs from the client forest scored 0.80000.
 
 The original CSVs are never overwritten. The shared rules reconstruct invalid or missing historical means from total/count when count is positive; invalidate impossible maxima and recover the exact one/two-purchase cases; and reconstruct annual spend only through exact equal-count identities. Unrecoverable invalid values remain missing for training-fold imputation. Structural missing means for customers without purchase history remain undefined. Counts, totals, minima, spread and shorter-window spend are trusted after the cross-column checks in Notebook 01.
 
